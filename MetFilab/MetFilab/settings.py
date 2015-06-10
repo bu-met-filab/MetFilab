@@ -116,7 +116,7 @@ DATABASE_ROUTERS = ['MetFilabApp.routers.DbRouter',]
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'America/New York'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 

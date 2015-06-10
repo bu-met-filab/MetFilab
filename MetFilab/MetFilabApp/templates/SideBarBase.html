@@ -1,0 +1,33 @@
+{% extends "TopBarBase.html" %}
+
+{% block content %}
+
+<div class="navbar-inverse">
+	<div class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+        <ul class="nav navbar-nav side-nav">
+            {% if project %}
+            <li>
+            {% else %}
+            <li class="active">
+            {% endif %}
+                <a href="/"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+{% block content2 %}
+{% endblock content2 %}
+
+
+<style type="text/css">
+    .navbar-inverse .navbar-nav > ul {
+        margin-bottom: 20px;
+    }
+
+    .navbar-inverse .navbar-nav > ul > li > a {
+        color: #9d9d9d;
+    }
+</style>
+
+{% endblock content %}
