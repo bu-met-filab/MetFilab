@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from MetFilabApp.views import users, currency
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
@@ -23,9 +25,10 @@ urlpatterns = [
     url(r'^$',),
 
     # Account
-	url(r'^signin',),
-	url(r'^signout',),
-	url(r'^signup',),
+	url(r'^signin',users.signin,
+	url(r'^signout',users.signout),
+	url(r'^signup',suers.signup),
 
-	# 
+	# Currency
+    rul(r'^currency/search', currency.search),
 ]
