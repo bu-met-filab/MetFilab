@@ -73,10 +73,12 @@ class SearchCurrencyForm(forms.Form):
 			else:
 				field.widget.attrs.update({'class':'form-control'})
 
-    def clean_end_date(self):
-        startdate = self.cleaned_data['start_date']
-        enddate = self.cleaned_data['end_date']
-        if enddate < startdate:
-            raise forms.ValidationError(
-                'Iteration end date should be later than it\'s start date !')
-        return enddate
+	def clean_end_date(self):
+		startdate = self.cleaned_data['start_date']
+		enddate = self.cleaned_data['end_date']
+		if enddate < startdate:
+			raise forms.ValidationError(
+				'Iteration end date should be later than it\'s start date !')
+		
+		return enddate
+

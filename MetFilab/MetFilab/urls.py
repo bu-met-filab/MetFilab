@@ -16,19 +16,19 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from MetFilabApp.views import users, currency
+from MetFilabApp.views import home, users, currency
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     # Home
-    url(r'^$',),
+    url(r'^$', home.home_page),
 
     # Account
-	url(r'^signin',users.signin,
-	url(r'^signout',users.signout),
-	url(r'^signup',suers.signup),
+	url(r'^signin', users.signin),
+	url(r'^signout', users.signout),
+	url(r'^signup', users.signup),
 
 	# Currency
-    rul(r'^currency/search', currency.search),
+    url(r'^currency/search', currency.search),
 ]

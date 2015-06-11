@@ -3,7 +3,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from forms import SignInForm, SignUpForm, SignUpProfileFormSet
-
 from MetFilabApp.models.app.profile import Profile
 
 def signin(request):
