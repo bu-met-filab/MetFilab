@@ -28,4 +28,4 @@ class Profile(models.Model):
 	reject_reason = models.TextField(max_length=300)
 
 	class Meta:
-		app_label = 'filabapp'
+		app_label = 'MetFilabApp'
