@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.models import inlineformset_factory, modelformset_factory
+
 from django.contrib import auth as authlib
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -41,10 +42,10 @@ class ProfileForm(forms.ModelForm):
 	class Meta:
 		model = Profile
 		fields = '__all__'
-		widgets = {'intro': Textarea(attrs={'cols': 60, 'rows': 5}),
-				   'topic': Textarea(attrs={'cols': 60, 'rows': 2}),
-				   'reason': Textarea(attrs={'cols': 60, 'rows': 5}),
-				   'reject_reason': Textarea(attrs={'cols': 60, 'rows': 5}),}
+		widgets = {'intro': forms.Textarea(attrs={'cols': 60, 'rows': 5}),
+				   'topic': forms.Textarea(attrs={'cols': 60, 'rows': 2}),
+				   'reason': forms.Textarea(attrs={'cols': 60, 'rows': 5}),
+				   'reject_reason': forms.Textarea(attrs={'cols': 60, 'rows': 5}),}
 
 SignUpProfileFormSet = inlineformset_factory(User, Profile, form=ProfileForm, can_delete=False, max_num=1, extra=1, exclude=('reject_reason',))
 
@@ -60,10 +61,10 @@ class SignInForm(AuthenticationForm):
 
 class SearchCurrencyForm(forms.Form):
 
-	currency = forms.ModelChoiceField(queryset=ThomCurrency.objects.all(), to_field_name="currency_name")
+	currency = forms.ModelChoiceField(queryset=ThomCurrency.objects.all())
 	sentiment_source = forms.ChoiceField(choices=ThomDailyCurrency.SOURCE_CHOICES)
-	start_date = forms.DateField(input_formats="%m/%d/%y")
-	end_date = forms.DateField(input_formats="%m/%d/%y")
+	start_date = forms.DateField()
+	end_date = forms.DateField()
 
 	def __init__(self, *args, **kwargs):
 		super(SearchCurrencyForm, self).__init__(*args, **kwargs)

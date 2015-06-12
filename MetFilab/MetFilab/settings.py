@@ -86,25 +86,25 @@ DATABASES = {
     'default': {
         'NAME': 'filabapp',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'USER': 'filab',
+        'PASSWORD': 'Met-Filab',
+        'HOST': 'met-filab.org',
         'PORT': '3306',
     },
     'filab':{
         'NAME': 'filab',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'USER': 'filab',
+        'PASSWORD': 'Met-Filab',
+        'HOST': 'met-filab.org',
         'PORT': '3306',
     },
     'filab_brazil':{
         'NAME': 'filab_brazil',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'USER': 'filab',
+        'PASSWORD': 'Met-Filab',
+        'HOST': 'met-filab.org',
         'PORT': '3306',
     },    
 }
@@ -129,3 +129,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_URL =  '/signin'

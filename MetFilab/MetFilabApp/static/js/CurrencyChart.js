@@ -1,6 +1,16 @@
-$(function (seriesOptions) {
+function drawCurrencyChart(id, seriesOptions) {
 
-	$('#currency_chart').highcharts('StockChart', {
+	var chartId = "#" + id;
+
+	// $(chartId).highcharts('StockChart',{
+	// 	chart: {
+	// 		marginRight: 50
+	// 	},
+
+	// 	series: seriesOptions,
+
+	// });
+	$(chartId).highcharts('StockChart', {
 
 		rangeSelector: {
 			inputEnabled: false,
@@ -24,7 +34,8 @@ $(function (seriesOptions) {
 		        value: 0,
 		        width: 2,
 		        color: 'silver'
-		    }]
+		    }],
+		    floor: -10,
 		},
 
 		legend: {
@@ -43,7 +54,7 @@ $(function (seriesOptions) {
 		},
 
 		series: seriesOptions
-	}
+	});
 
 
-});
+}
