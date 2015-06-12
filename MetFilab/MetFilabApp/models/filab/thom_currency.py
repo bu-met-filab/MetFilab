@@ -5,6 +5,6 @@ class ThomCurrency(models.Model):
 	currency_name = models.CharField(max_length=50)
 
 	class Meta:
-	app_lable = 'filab'
-	db_table = 'thom_currency'
+		app_lable = 'filab'
+		db_table = 'thom_currency'
 		
