@@ -22,9 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '#g9@lap4p!g@pg3@ozhre2m#3rw5)3_as2680i-&l!-6=@ku$k'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -81,33 +78,6 @@ WSGI_APPLICATION = 'MetFilab.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-
-DATABASES = {
-    'default': {
-        'NAME': 'filabapp',
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    },
-    'filab':{
-        'NAME': 'filab',
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    },
-    'filab_brazil':{
-        'NAME': 'filab_brazil',
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    },    
-}
 
 DATABASE_ROUTERS = ['MetFilabApp.routers.DbRouter',]
 

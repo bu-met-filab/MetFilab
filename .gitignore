@@ -1,3 +1,5 @@
 *.pyc
 
-MetFilab/MetFilab/settings.py
+MetFilab/MetFilab/settings/develop.py
+
+MetFilab/MetFilab/settings/production.py
