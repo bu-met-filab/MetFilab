@@ -1,9 +1,13 @@
 from django import forms
 from django.forms.models import inlineformset_factory, modelformset_factory
+
 from django.contrib import auth as authlib
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from MetFilabApp.models.app.profile import Profile
+from MetFilabApp.models.filab.thom_currency import ThomCurrency
+from MetFilabApp.models.filab.thom_dailycurrency import ThomDailyCurrency
+
 
 class SignUpForm(UserCreationForm):
 	"""docstring for SignUpForm"""
@@ -28,20 +32,20 @@ class SignUpForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
 
 	def __init__(self, *args, ** kwargs):
-	super(ProfileForm, self).__init__(*args, **kwargs)
-	for name, field in self.fields.items():
-		if field.widget.attrs.has_key('class'):
-			field.widget.attrs['class'] += ' form-control'
-		else:
-			field.widget.attrs.update({'class':'form-control'})
+		super(ProfileForm, self).__init__(*args, **kwargs)
+		for name, field in self.fields.items():
+			if field.widget.attrs.has_key('class'):
+				field.widget.attrs['class'] += ' form-control'
+			else:
+				field.widget.attrs.update({'class':'form-control'})
 
 	class Meta:
 		model = Profile
 		fields = '__all__'
-		widgets = {'intro': Textarea(attrs={'cols': 60, 'rows': 5}),
-				   'topic': Textarea(attrs={'cols': 60, 'rows': 2}),
-				   'reason': Textarea(attrs={'cols': 60, 'rows': 5}),
-				   'reject_reason': Textarea(attrs={'cols': 60, 'rows': 5}),}
+		widgets = {'intro': forms.Textarea(attrs={'cols': 60, 'rows': 5}),
+				   'topic': forms.Textarea(attrs={'cols': 60, 'rows': 2}),
+				   'reason': forms.Textarea(attrs={'cols': 60, 'rows': 5}),
+				   'reject_reason': forms.Textarea(attrs={'cols': 60, 'rows': 5}),}
 
 SignUpProfileFormSet = inlineformset_factory(User, Profile, form=ProfileForm, can_delete=False, max_num=1, extra=1, exclude=('reject_reason',))
 
@@ -54,3 +58,28 @@ class SignInForm(AuthenticationForm):
 				field.widget.attrs['class'] += 'form-control'
 			else:
 				field.widget.attrs.update({'class':'form-control'})
+
+class SearchCurrencyForm(forms.Form):
+
+	currency = forms.ModelChoiceField(queryset=ThomCurrency.objects.all())
+	sentiment_source = forms.ChoiceField(choices=ThomDailyCurrency.SOURCE_CHOICES)
+	start_date = forms.DateField()
+	end_date = forms.DateField()
+
+	def __init__(self, *args, **kwargs):
+		super(SearchCurrencyForm, self).__init__(*args, **kwargs)
+		for name, field in self.fields.items():
+			if field.widget.attrs.has_key('class'):
+				field.widget.attrs['class'] += ' form-control'
+			else:
+				field.widget.attrs.update({'class':'form-control'})
+
+	def clean_end_date(self):
+		startdate = self.cleaned_data['start_date']
+		enddate = self.cleaned_data['end_date']
+		if enddate < startdate:
+			raise forms.ValidationError(
+				'Iteration end date should be later than it\'s start date !')
+		
+		return enddate
+

@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from MetFilabApp.models.filab.thom_currency import ThomCurrency
 
 class ThomDailyCurrency(models.Model):
 
@@ -9,8 +10,14 @@ class ThomDailyCurrency(models.Model):
 		('social','Social',),
 		)
 
+<<<<<<< HEAD
 	rowid = models.CharField(primary_key=True, max_length=40)
 	currency = models.CharField(max_length=5)
+=======
+	rowid = models.CharField(primary_key=True)
+	# currency = models.CharField(max_length=5)
+	currency = models.ForeignKey(ThomCurrency,db_column='currency')
+>>>>>>> bu-met-filab/master
 	date = models.DateField()
 	time = models.TimeField()
 	source = models.CharField(max_length=10, choices=SOURCE_CHOICES)
@@ -31,7 +38,7 @@ class ThomDailyCurrency(models.Model):
 	pricemomentum = models.FloatField(validators=[MaxValueValidator(1), MinValueValidator(-1)], blank=True, null=True)
 
 	class Meta:
-		app_lable = 'filab'
+		app_label = 'filab'
 		db_table = 'thom_dailycurrency'
 		
 			
