@@ -1,8 +1,9 @@
 from django.db import models
 
 class ThomCurrency(models.Model):
+	
 	currency = models.CharField(max_length=5)
-	currency_name = models.CharField(max_length=50)
+	currency_name = models.CharField(max_length=50, blank=True)
 
 	class Meta:
 	app_lable = 'filab'
