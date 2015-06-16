@@ -1,4 +1,5 @@
-function drawCurrencyChart(id, seriesOptions) {
+
+function drawCurrencyChart(id, columnOptions, seriesOptions) {
 
 	var chartId = "#" + id;
 
@@ -17,26 +18,27 @@ function drawCurrencyChart(id, seriesOptions) {
 		    selected: 4
 		},
 
-		yAxis: {
-		    title: {
-		    	text: 'Currency',
-		        tyle: {
-		            color: '#7cb5ec',
-		            fontWeight: 'bold'
-		        }
-		    },
-		    labels: {
-		        formatter: function () {
-		        	return (this.value > 0 ? ' + ' : '') + this.value + '%';
-		        }
-		    },
-		    plotLines: [{
-		        value: 0,
-		        width: 2,
-		        color: 'silver'
-		    }],
-		    floor: -10,
-		},
+		yAxis: columnOptions,
+		// yAxis: {
+		// 	opposite: false,
+		//     title: {
+		//     	text: 'Currency Sentiment',
+		//         style: {
+		//             color: '#7cb5ec',
+		//             fontWeight: 'bold'
+		//         }
+		//     },
+		//     labels: {
+		//         formatter: function () {
+		//         	return (this.value > 0 ? ' + ' : '') + this.value;
+		//         }
+		//     },
+		//     plotLines: [{
+		//         value: 0,
+		//         width: 2,
+		//         color: 'silver'
+		//     }],
+		// },
 
 		legend: {
 		    enabled: true
@@ -44,7 +46,7 @@ function drawCurrencyChart(id, seriesOptions) {
 
 		plotOptions: {
 		    series: {
-		    	compare: 'value'
+		    	compare: 'percentage'
 		    }
 		},
 

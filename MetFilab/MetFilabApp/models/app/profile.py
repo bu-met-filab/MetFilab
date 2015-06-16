@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext as _
 
 class Profile(models.Model):
 	
@@ -8,12 +9,12 @@ class Profile(models.Model):
 	STATUS_REJECTED = 'R'
 
 	STATUS_CHOICES = (
-		(STATUS_APPLIED, 'Applied'),
-		(STATUS_APPROVED, 'Approved'),
-		(STATUS_REJECTED, 'Rejected'),
+		(STATUS_APPLIED, _('Applied')),
+		(STATUS_APPROVED, _('Approved')),
+		(STATUS_REJECTED, _('Rejected')),
 	)
 
-	user = models.OneToOneField(User)
+	user = models.OneToOneField(User, primary_key=True)
 	#Organization
 	org = models.CharField(max_length=50)
 	#Introduction
