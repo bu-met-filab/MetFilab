@@ -21,6 +21,7 @@
     "highmaps-release": "~1.1.5",
     "highstock-release": "~2.1.5",
     "jquery": "~2.1.4",
-    "smalot-bootstrap-datetimepicker": "~2.3.4"
+    "smalot-bootstrap-datetimepicker": "~2.3.4",
+    "bootstrap-multiselect": "~0.9.13"
   }
 }

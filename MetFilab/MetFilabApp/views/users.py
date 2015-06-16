@@ -28,10 +28,14 @@ def signup(request):
 	if request.method == 'POST':
 		form = SignUpForm(request.POST)
 		formset = SignUpProfileFormSet(request.POST, instance=user)
-		if form.is_valid() and formset.is_valid():
-			form.save(commit=True)
-			formset.save(commit=True)
-			return render(request, 'SignUpFinish.html', {'isLoggedIn': 'False'})
+		if form.is_valid():
+			user = form.save(commit=False)
+
+			formset = SignUpProfileFormSet(request.POST, instance=user)
+			if formset.is_valid():
+				form.save(commit=True)
+				formset.save(commit=True)
+				return render(request, 'SignUpFinish.html', {'isLoggedIn': 'False'})
 	else:
 		form = SignUpForm()
 		formset = SignUpProfileFormSet(instance=user)

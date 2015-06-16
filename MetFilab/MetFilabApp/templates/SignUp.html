@@ -34,6 +34,7 @@
 					{{ formset.management_form }}
 					{% for form1 in formset %}
 						{% for field in form1 %}
+							{% if field != form1.user %}
 							{% if field.errors %}
 							<div class="form-group has-error has-feedback">
 							{% else %}
@@ -50,14 +51,15 @@
 									{% endif %}
 								</div>
 							</div>
+							{% endif %}
 						{% endfor %}
 					{% endfor %}
-					<div class="col-sm-6 col-sm-offset-3" style="padding-top: 40px;">
+					<div class="col-sm-8 col-sm-offset-2" style="padding: 30px;">
 						<div class="col-sm-6">
-							<button type="submit" class="btn btn-block btn-primary btn-lg"> Register</button>
+							<button type="submit" class="btn btn-block btn-primary"> Register</button>
 						</div>
 						<div class="col-sm-6">
-							<a class="btn btn-block btn-default btn-lg" href="/"> Cancel</a>
+							<a class="btn btn-block btn-default" href="/"> Cancel</a>
 						</div>
 					</div>
 
