@@ -1,5 +1,5 @@
 from django.db import models
-from MetFilab.MetFilabApp.models.filab.worldbank_country import WorldbankCountry
+from MetFilab.MetFilabApp.models.filab.worldbank import WorldbankCountry
 
 class AlexEquity(models.Model):
 

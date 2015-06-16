@@ -1,12 +1,12 @@
 from django import forms
+from django.db import models
 from django.forms.models import inlineformset_factory, modelformset_factory
-
+from django.utils.translation import ugettext as _
 from django.contrib import auth as authlib
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from MetFilabApp.models.app.profile import Profile
-from MetFilabApp.models.filab.thom_currency import ThomCurrency
-from MetFilabApp.models.filab.thom_dailycurrency import ThomDailyCurrency
+from MetFilabApp.models.filab.thompson import ThomCurrency, ThomDailyCurrency
 
 
 class SignUpForm(UserCreationForm):
@@ -25,6 +25,7 @@ class SignUpForm(UserCreationForm):
 
 	def save(self, commit=True):
 		user = super(SignUpForm, self).save(commit=False)
+		user.is_active = False
 		if commit:
 			user.save()
 		return user
@@ -41,13 +42,20 @@ class ProfileForm(forms.ModelForm):
 
 	class Meta:
 		model = Profile
-		fields = '__all__'
-		widgets = {'intro': forms.Textarea(attrs={'cols': 60, 'rows': 5}),
-				   'topic': forms.Textarea(attrs={'cols': 60, 'rows': 2}),
-				   'reason': forms.Textarea(attrs={'cols': 60, 'rows': 5}),
-				   'reject_reason': forms.Textarea(attrs={'cols': 60, 'rows': 5}),}
+		fields = ('__all__')
+		widgets = {'intro': forms.Textarea(attrs={'cols': 100, 'rows': 3}),
+				   'topic': forms.Textarea(attrs={'cols': 100, 'rows': 2}),
+				   'reason': forms.Textarea(attrs={'cols': 100, 'rows': 3}),
+				   'reject_reason': forms.Textarea(attrs={'cols': 100, 'rows': 3}),}
+		labels = {
+            "org": _("Organization"),
+            "intro": _("Self Introduction"),
+            "topic": _("Research Topic"),
+            "reason": _("Reason of Application"),
+            "reject_reason": _("Reason of Rejections"),
+        }
 
-SignUpProfileFormSet = inlineformset_factory(User, Profile, form=ProfileForm, can_delete=False, max_num=1, extra=1, exclude=('reject_reason',))
+SignUpProfileFormSet = inlineformset_factory(User, Profile, form=ProfileForm, can_delete=False, max_num=1, extra=1, exclude=('user','status','reject_reason',))
 
 class SignInForm(AuthenticationForm):
 	"""docstring for SignInForm"""
@@ -65,9 +73,16 @@ class SearchCurrencyForm(forms.Form):
 	sentiment_source = forms.ChoiceField(choices=ThomDailyCurrency.SOURCE_CHOICES)
 	start_date = forms.DateField()
 	end_date = forms.DateField()
+	drawable_columns = forms.MultipleChoiceField()
 
 	def __init__(self, *args, **kwargs):
 		super(SearchCurrencyForm, self).__init__(*args, **kwargs)
+		coltuples = []
+		for f in ThomDailyCurrency._meta.get_fields():
+			if type(f) == models.FloatField:
+				coltuples += [(f.name, f.verbose_name)]
+		self.fields['drawable_columns'] = forms.MultipleChoiceField(choices=coltuples)
+
 		for name, field in self.fields.items():
 			if field.widget.attrs.has_key('class'):
 				field.widget.attrs['class'] += ' form-control'
@@ -78,8 +93,16 @@ class SearchCurrencyForm(forms.Form):
 		startdate = self.cleaned_data['start_date']
 		enddate = self.cleaned_data['end_date']
 		if enddate < startdate:
-			raise forms.ValidationError(
-				'Iteration end date should be later than it\'s start date !')
+			raise forms.ValidationError(_(
+				'Iteration end date should be later than it\'s start date !'))
 		
 		return enddate
 
+	class Meta:
+		labels = {
+			"currency": _("Currency"),
+			"sentiment_source": _("Source"),
+			"start_date": _("Start Date"),
+			"end_date": _("End Date"),
+			"drawable_columns": _("Drawable Columns"),
+		}

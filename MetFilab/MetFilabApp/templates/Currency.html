@@ -53,9 +53,13 @@
 							</div>
 						</div>
 					</div>
+					<div class="form-group">
+						<label for="{{ form.drawable_columns.id_for_label }}" class="col-xs-12 col-sm-4 control-label">Drawable Columns</label>
+						<div class="col-xs-12 col-sm-8">{{ form.drawable_columns }}</div>
+					</div>
 					<div class="col-xs-12">
 						<div class="form-group">
-							<a class="btn btn-primary btn-block" href="javascript:void(0)" onclick="searchCurrency();">Search</a>
+							<a id="button_search" class="btn btn-primary btn-block" href="javascript:void(0)">Search</a>
 						</div>
 						<div class="form-group">
 							{% if form.errors %}
@@ -82,48 +86,107 @@
 <script src="{% static "js/BootstrapTable.js" %}"></script>
 
 <script type="text/javascript">
-	$(".form_datetime").datetimepicker({
-		format: "mm/dd/yyyy",
-		autoclose: true,
-		startView: 2,
-		minView: 2,
-		todayHighlight: true,
-		pickerPosition: 'bottom-right',
-	});
-
-	function searchCurrency() {
-		$(".alert").css('visibility','hidden');
-					
-		$.ajax({
-			type: "POST",
-			cache: false,
-			url: $("#SearchCurrencyForm").attr("action"),
-			data: $("#SearchCurrencyForm").serialize(),
-			success: function(data) {
-				// console.log(data.toString());
-				if (data) {
-					// var obj = $.parseJSON(data);
-					var obj = data;
-
-					var seriesOptions = []
-					seriesOptions[0] = {
-						data: obj.data_chart,
-					};
-
-					drawDataTable("CurrencyTable",obj.data_table.data_column,obj.data_table.data_row);
-					drawCurrencyChart("CurrencyChart",seriesOptions);
-					// drawTable('CurrencyTable', obj.data_table);
-					// drawChart('CurrencyChart', obj.data_chart);
-				} else {
-					$("#CurrencyTable").html('');
-					$("#CurrencyChart").html('');
-					$(".alert").css('visibility','visible');
-					$(".alert").html("<strong>Cant't find any data !</strong>");
-				}
-			},
-			async: true
+	$(function() {
+		$(".form_datetime").datetimepicker({
+			format: "mm/dd/yyyy",
+			autoclose: true,
+			startView: 2,
+			minView: 2,
+			todayHighlight: true,
+			pickerPosition: 'bottom-right',
 		});
-	}
+
+		$("#{{ form.drawable_columns.id_for_label }}").multiselect({
+			includeSelectAllOption: true,
+			enableFiltering: true,
+		});
+
+		$("#button_search").click(function (event) {
+			searchCurrency();
+		});
+
+		function searchCurrency() {
+			$(".alert").css('visibility','hidden');
+						
+			$.ajax({
+				type: "POST",
+				cache: false,
+				url: $("#SearchCurrencyForm").attr("action"),
+				data: $("#SearchCurrencyForm").serialize(),
+				success: function(data) {
+					// console.log(data.toString());
+					if (data) {
+						// var obj = $.parseJSON(data);
+						var obj = data;
+
+						// var seriesOptions = []
+						// seriesOptions[0] = {
+						// 	data: obj.data_chart,
+						// };
+
+						drawDataTable("CurrencyTable",obj.data_table.data_column,obj.data_table.data_row);
+						// drawCurrencyChart("CurrencyChart",seriesOptions);
+						// drawTable('CurrencyTable', obj.data_table);
+						// drawChart('CurrencyChart', obj.data_chart);
+						prepareChart(obj);
+					} else {
+						$("#CurrencyTable").html('');
+						$("#CurrencyChart").html('');
+						$(".alert").css('visibility','visible');
+						$(".alert").html("<strong>Cant't find any data !</strong>");
+					}
+				},
+				async: true
+			});
+		}
+
+		function prepareChart(data) {
+			var columnOptions = [];
+			var seriesOptions = [];
+			var selCols = [];
+			var dRows = data.data_table.data_row;
+			var dCols = data.data_table.data_column;
+
+			$('#{{ form.drawable_columns.id_for_label }} option:selected').map(function(a, item){
+				selCols.push(item.value);
+			});
+
+			$.each(selCols, function (index, column) {
+				var seriesObj = {};
+				var dataArr = [];
+
+				var colName = $.grep(dCols, function (element, index) {
+					return element.field == column;
+				});
+
+				for (var i in dRows) {
+
+					// name = colName[0].title;
+					date = new Date(dRows[i].date + ' ' + dRows[i].time).getTime();
+					val = dRows[i][column];
+
+					var dataObj = {};
+					dataObj['name'] = dRows[i].date;
+					dataObj['x'] = date;
+					dataObj['y'] = val;
+					dataArr.push(dataObj);
+				};
+
+				seriesObj['data'] = dataArr;
+				seriesObj['yAxis'] = colName[0].field;
+				seriesObj['name'] = colName[0].title;
+				seriesOptions.push(seriesObj);
+
+				var columnObj = {};
+				columnObj['id'] = colName[0].field;
+				columnObj['title'] = {'text': colName[0].title};
+				columnObj['opposite'] = false;
+				columnOptions.push(columnObj);
+			});
+
+			drawCurrencyChart("CurrencyChart", columnOptions, seriesOptions);
+		}
+	});
 </script>
 
 {% endblock content2 %}
