@@ -5,7 +5,7 @@ from django.http import JsonResponse, HttpResponse
 from django.utils.dateformat import DateFormat
 from MetFilabApp.utils.DateTimeDjangoJSONEncoder import DateTimeDjangoJSONEncoder
 from MetFilabApp.views.forms import SearchCurrencyForm
-from MetFilabApp.models.filab.thom_dailycurrency import ThomDailyCurrency
+from MetFilabApp.models.filab.thompson import ThomDailyCurrency
 
 @login_required
 def search(request):

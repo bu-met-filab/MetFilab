@@ -6,8 +6,7 @@ from django.contrib import auth as authlib
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from MetFilabApp.models.app.profile import Profile
-from MetFilabApp.models.filab.thom_currency import ThomCurrency
-from MetFilabApp.models.filab.thom_dailycurrency import ThomDailyCurrency
+from MetFilabApp.models.filab.thompson import ThomCurrency, ThomDailyCurrency
 
 
 class SignUpForm(UserCreationForm):
