@@ -16,12 +16,13 @@ class ThomCurrency(models.Model):
 class ThomDailyCurrency(models.Model):
 
 	SOURCE_CHOICES = (
-		('all','All',),
-		('news','News',),
-		('social','Social',),
+		('all',_('All'),),
+		('news',_('News'),),
+		('social',_('Social'),),
 		)
 
-	currency = models.ForeignKey(ThomCurrency,db_column='currency', verbose_name="Currency")
+	rowid = models.CharField(primary_key=True, max_length=40)
+	currency = models.ForeignKey(ThomCurrency,db_column='currency', verbose_name=_("Currency"))
 	date = models.DateField(verbose_name=_("Date"))
 	time = models.TimeField(verbose_name=_("Time"))
 	source = models.CharField(max_length=10, choices=SOURCE_CHOICES, verbose_name=_("Source"))
