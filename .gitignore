@@ -3,3 +3,7 @@
 MetFilab/MetFilab/settings/develop.py
 
 MetFilab/MetFilab/settings/production.py
+
+Capfile
+
+*.rb

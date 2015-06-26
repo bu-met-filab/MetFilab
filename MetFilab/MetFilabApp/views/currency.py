@@ -77,4 +77,4 @@ def search(request):
 		# 	return HttpResponse(form.non_field_errors)
 	else:
 		form = SearchCurrencyForm()
-	return render(request, 'Currency.html', {'form': form, 'actionUrl': '/currency/search'})
+	return render(request, 'Currency.html', {'form': form, 'actionUrl': '/currency/search', 'page': 'currency1'})
