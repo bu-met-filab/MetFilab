@@ -1,0 +1,113 @@
+{% extends "SideBarBase.html" %}
+
+{% load staticfiles %}
+
+{% block content2 %}
+
+<div class="wrapper">
+	<div class="page-wrapper">
+		<div class="row">
+			<div class="col-lg-12">
+				<ol class="breadcrumb">
+					<li style="font-size: xx-large;">Stock-Yahoo Finance</li>
+				</ol>
+			</div>
+		</div>
+		<div class="row">
+			<!-- For form -->
+
+			<div class="col-md-12 col-lg-4">
+
+				<form id="ChooseCountryForm" class="form-horizontal" action="" method="post">
+					{% csrf_token %}
+					<div class="form-group">
+						<label for="{{ countryform.country.id_for_label }}" class="col-xs-12 col-sm-4 control-label">Country</label>
+						<div class="col-xs-12 col-sm-8">{{ countryform.country }}</div>
+					</div>
+				</form>
+
+				<form id="SearchStockForm" class="form-horizontal" action="{{ actionUrl }}" method="post">
+					{% csrf_token %}
+					<div class="form-group">
+						<label for="{{ searchform.symbol.id_for_label }}" class="col-xs-12 col-sm-4 control-label">Stock Symbol</label>
+						<div class="col-xs-12 col-sm-8">{{ searchform.symbol }}</div>
+					</div>
+					<div class="form-group">
+						<label for="{{ searchform.start_date.id_for_label }}" class="col-xs-12 col-sm-4 control-label">Start Date</label>
+						<div class="col-xs-12 col-sm-8">
+							<div class="input-group date form_datetime">
+								{{ searchform.start_date }}	
+								<span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="{{ searchform.end_date.id_for_label }}" class="col-xs-12 col-sm-4 control-label">End Date</label>
+						<div class="col-xs-12 col-sm-8">
+							<div class="input-group date form_datetime">
+								{{ searchform.end_date }}	
+								<span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						<div class="form-group">
+							<a id="button_search" class="btn btn-primary btn-block" href="javascript:void(0)">Search</a>
+						</div>
+						<div class="form-group">
+							{% if form.errors %}
+							<div class="">{{ Searchform.errors }}</div>
+							{% endif %}
+							<div class="alert alert-danger" role="alert" style="visibility: hidden;"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<!-- For search result-->
+
+
+		</div>
+	</div>
+</div>
+
+
+<script src="{% static "js/StockChart.js" %}"></script>
+<script src="{% static "js/BootstrapTable.js" %}"></script>
+
+<script type="text/javascript">
+	$(function() {
+		$(".form_datetime").datetimepicker({
+			format: "mm/dd/yyyy",
+			autoclose: true,
+			startView: 2,
+			minView: 2,
+			todayHighlight: true,
+			pickerPosition: 'bottom-right',
+		});
+
+		$("#{{ countryform.country.id_for_label }}").click(function (event) {
+			searchStock();
+		});
+   		
+   		function searchStock() {
+   			$(".alert").css('visibility','hidden');
+
+   			$.ajax({
+   				type: "POST"
+   				cache: false;
+   				url: $("#SearchStockForm").attr("action"),
+   				data: $("#SearchStockForm").serialize(),
+   				success: Function(data) {
+
+   				},
+   				async: true
+   			});
+   		}
+
+
+
+
+	});
+</script>
+
+{% endblock content2 %}

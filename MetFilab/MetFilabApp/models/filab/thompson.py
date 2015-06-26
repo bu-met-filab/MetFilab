@@ -20,7 +20,7 @@ class ThomDailyCurrency(models.Model):
 		('news','News',),
 		('social','Social',),
 		)
-
+	rowid = models.CharField(primary_key=True, max_length=40)
 	currency = models.ForeignKey(ThomCurrency,db_column='currency', verbose_name="Currency")
 	date = models.DateField(verbose_name=_("Date"))
 	time = models.TimeField(verbose_name=_("Time"))

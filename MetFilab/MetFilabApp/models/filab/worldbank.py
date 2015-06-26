@@ -1,5 +1,7 @@
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
 
+@python_2_unicode_compatible
 class WorldbankCountry(models.Model):
 
 	rowid = models.CharField(primary_key=True, max_length=40)
@@ -13,7 +15,11 @@ class WorldbankCountry(models.Model):
 	other_group = models.CharField(max_length=50, blank=True, null=True)
 	currency_unit = models.CharField(max_length=50, blank=True, null=True)
 
+
+	def __str__(self):
+		return '(' + self.code + ')-' + self.short_name
+
 	class Meta:
-		app_lable = 'filab'
+		app_label = 'filab'
 		db_table = 'worldbank_country'
 
