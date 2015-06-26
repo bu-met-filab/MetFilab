@@ -23,7 +23,8 @@ urlpatterns = [
 
     # Home
     url(r'^$', home.home_page),
-
+    url(r'^dashboard', home.dash_board),
+    
     # Account
 	url(r'^signin', users.signin),
 	url(r'^signout', users.signout),
