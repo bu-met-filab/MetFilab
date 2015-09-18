@@ -8,15 +8,38 @@ from MetFilabApp.views.forms import SearchCurrencyForm, SearchStockForm, ChooseC
 from MetFilabApp.models.filab.thompson import ThomDailyCurrency
 from MetFilabApp.models.filab.yahoo import YahooStock
 from MetFilabApp.models.filab.worldbank import WorldbankCountry
+from MetFilabApp.models.filab.ticker import Ticker
 
 @login_required
 def search(request):
+	
 	countryform = ChooseCountryForm()
+
 	if request.method == 'POST':
-		form = SearchStockForm(request.POST, country=country)
-		#if form.is_valid():
+		countryform = ChooseCountryForm(request.POST)
+		# pField = request.POST
+		# selCountry = pField.get('country','')
+		if countryform.is_valid():
+			searchform = SearchStockForm(country=countryform.cleaned_data['country'].code)
+			
+		#form = SearchStockForm(country=request.POST.get('country'))
+		#searchform = SearchStockForm(country=countryform.cleaned_data['country'])
+		# searchform = SearchStockForm(country=selCountry)
+		#if Searchform.is_valid():
 		#else:
 		# 	return HttpResponse(form.non_field_errors)
 	else:
-		form = SearchStockForm()
-	return render(request, 'Stock.html', {'searchform': form, 'countryform':countryform, 'actionUrl': '/stock/search'})
+		searchform = SearchStockForm()
+
+	return render(request, 'Stock.html', {'searchform': searchform, 'countryform':countryform, 'actionUrl': '/stock/search'})
+
+def querysymbol(request):
+	if request.method == 'POST':
+		countryform = ChooseCountryForm(request.POST)
+		result=Ticker.objects.filter(country=countryform.cleaned_data['country']).exclude(ticker_name=None)
+		dict_result = {};
+
+
+        
+
+

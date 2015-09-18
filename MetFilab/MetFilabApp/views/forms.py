@@ -129,8 +129,10 @@ class SearchStockForm(forms.Form):
 	start_date = forms.DateField()
 	end_date = forms.DateField()
 
-	def __init__(self, *args, ** kwargs):
+	def __init__(self, *args, **kwargs):
+		self.country = kwargs.pop('country','')
 		super(SearchStockForm, self).__init__(*args, **kwargs)
+		self.fields['symbol'] = forms.ModelChoiceField(queryset=Ticker.objects.filter(country=self.country).exclude(ticker_name=""))
 		for name, field in self.fields.items():
 			if field.widget.attrs.has_key('class'):
 				field.widget.attrs['class'] += ' form-control'

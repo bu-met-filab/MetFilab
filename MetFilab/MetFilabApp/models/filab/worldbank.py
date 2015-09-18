@@ -4,8 +4,8 @@ from django.utils.encoding import python_2_unicode_compatible
 @python_2_unicode_compatible
 class WorldbankCountry(models.Model):
 
-	rowid = models.CharField(primary_key=True, max_length=40)
-	code = models.CharField(max_length=5)
+	rowid = models.CharField( max_length=40)
+	code = models.CharField(primary_key=True, max_length=5)
 	long_name = models.CharField(max_length=100, blank=True, null=True)
 	short_name = models.CharField(max_length=30, blank=True, null=True)
 	wb2code = models.CharField(max_length=2, blank=True, null=True)
