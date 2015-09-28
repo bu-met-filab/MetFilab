@@ -1,5 +1,5 @@
 
-function drawCurrencyChart(id, columnOptions, seriesOptions) {
+function drawCurrencyChart(id, columnOptions, seriesOptions, drawCompleteCallback) {
 
 	var chartId = "#" + id;
 
@@ -12,6 +12,12 @@ function drawCurrencyChart(id, columnOptions, seriesOptions) {
 
 	// });
 	$(chartId).highcharts('StockChart', {
+
+		chart: {
+            events: {
+                load: drawCompleteCallback
+            }
+        },
 
 		rangeSelector: {
 			inputEnabled: false,

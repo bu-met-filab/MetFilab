@@ -31,6 +31,7 @@ urlpatterns = [
 	url(r'^signup', users.signup),
 
 	# Currency
+    url(r'^currency/search_json', currency.search_json),
     url(r'^currency/search', currency.search),
     url(r'^stock/search', stock.search),
 ]

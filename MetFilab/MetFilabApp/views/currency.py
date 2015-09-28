@@ -8,7 +8,7 @@ from MetFilabApp.views.forms import SearchCurrencyForm
 from MetFilabApp.models.filab.thompson import ThomDailyCurrency
 
 @login_required
-def search(request):
+def search_json(request):
 	if request.method == 'POST':
 		form = SearchCurrencyForm(request.POST)
 		if form.is_valid():
@@ -78,3 +78,15 @@ def search(request):
 	else:
 		form = SearchCurrencyForm()
 	return render(request, 'Currency.html', {'form': form, 'actionUrl': '/currency/search', 'page': 'currency1'})
+
+@login_required
+def search(request):
+	isValid = None
+	if request.method == 'POST':
+		form = SearchCurrencyForm(request.POST)
+		if form.is_valid():
+			isValid = True
+	else:
+		form = SearchCurrencyForm()
+	return render(request, 'Currency.html', {'form': form, 'isValid': isValid, 'actionUrl': '/currency/search2', 'page': 'currency1'})
+
