@@ -18,7 +18,7 @@ class AlexEquity(models.Model):
 
 	class Meta:
 		abstract = True
-		app_lable = 'filab'
+		app_label = 'filab'
 
 
 class AlexEquity1999(AlexEquity):

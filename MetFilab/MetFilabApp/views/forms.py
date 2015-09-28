@@ -7,6 +7,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from MetFilabApp.models.app.profile import Profile
 from MetFilabApp.models.filab.thompson import ThomCurrency, ThomDailyCurrency
+from MetFilabApp.models.filab.yahoo import YahooStock
+from MetFilabApp.models.filab.ticker import Ticker
+from MetFilabApp.models.filab.worldbank import WorldbankCountry
+
 
 
 class SignUpForm(UserCreationForm):
@@ -106,3 +110,49 @@ class SearchCurrencyForm(forms.Form):
 			"end_date": _("End Date"),
 			"drawable_columns": _("Drawable Columns"),
 		}
+
+class ChooseCountryForm(forms.Form):
+
+	country = forms.ModelChoiceField(queryset=WorldbankCountry.objects.all())
+
+	def __init__(self, *args, ** kwargs):
+		super(ChooseCountryForm, self).__init__(*args, **kwargs)
+		for name, field in self.fields.items():
+			if field.widget.attrs.has_key('class'):
+				field.widget.attrs['class'] += ' form-control'
+			else:
+				field.widget.attrs.update({'class':'form-control'})
+
+class SearchStockForm(forms.Form):
+
+	symbol = forms.ChoiceField()# values("symbol").distinct()
+	start_date = forms.DateField()
+	end_date = forms.DateField()
+
+	def __init__(self, *args, **kwargs):
+		self.country = kwargs.pop('country','')
+		super(SearchStockForm, self).__init__(*args, **kwargs)
+		self.fields['symbol'] = forms.ModelChoiceField(queryset=Ticker.objects.filter(country=self.country).exclude(ticker_name=""))
+		for name, field in self.fields.items():
+			if field.widget.attrs.has_key('class'):
+				field.widget.attrs['class'] += ' form-control'
+			else:
+				field.widget.attrs.update({'class':'form-control'})
+
+	def clean_end_date(self):
+		startdate = self.cleaned_data['start_date']
+		enddate = self.cleaned_data['end_date']
+		if enddate < startdate:
+			raise forms.ValidationError(_(
+				'Iteration end date should be later than it\'s start date !'))
+		return enddate
+
+	class Meta:
+		labels = {
+			"symbol": _("Currency"),
+			"start_date": _("Start Date"),
+			"end_date": _("End Date"),
+			
+			}
+
+

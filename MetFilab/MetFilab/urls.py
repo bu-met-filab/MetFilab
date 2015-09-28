@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from MetFilabApp.views import home, users, currency
+from MetFilabApp.views import home, users, currency, stock
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -33,4 +33,5 @@ urlpatterns = [
 	# Currency
     url(r'^currency/search_json', currency.search_json),
     url(r'^currency/search', currency.search),
+    url(r'^stock/search', stock.search),
 ]
